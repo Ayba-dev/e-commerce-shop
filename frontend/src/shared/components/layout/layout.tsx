@@ -1,6 +1,7 @@
 import React from 'react';
-import Header from "../header/header.tsx";
+
 import {Outlet} from "react-router-dom";
+import { Header } from '../header/header'
 
 const Layout = () => {
     return (

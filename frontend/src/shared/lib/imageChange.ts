@@ -1,8 +1,9 @@
 import React from 'react'
+import { INewProduct } from '../components/createProductForm/CreateProductForm'
 
 export const handleImageChange = (
-  event: React.ChangeEvent<HTMLInputElement>
-  setState: React.Dispatch<React.SetStateAction<any>>
+  event: React.ChangeEvent<HTMLInputElement>,
+  setState: React.Dispatch<React.SetStateAction<INewProduct>>
 ) => {
   const imageFile = event.target.files![0]
 
@@ -10,7 +11,7 @@ export const handleImageChange = (
     const reader = new FileReader()
 
     reader.onload = () => {
-      setNewProduct((prevState) => ({
+      setState((prevState) => ({
         ...prevState,
         image: reader.result,
       }))

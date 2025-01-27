@@ -1,47 +1,46 @@
-import {CategoryItem} from "../../components/categoryItem/CategoryItem.tsx";
-import {useFeaturedProductsQuery} from "../../store/slices/productSlice/productApi.ts";
-import {FeaturedProduct} from "../../components/FeaturedProducts/FeaturedProducts.tsx";
+import React from 'react'
+import { CategoryItem } from '../../shared/components/categoryItem/CategoryItem'
+import { useFeaturedProductsQuery } from '../../services/productApi'
+import { FeaturedProduct } from '../../shared/components/featureProduct/featureProduct'
 
 
 
 const categories = [
-    { href: "/jeans", name: "Jeans", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/jeans.jpg?raw=true" },
-    { href: "/t-shirts", name: "T-shirts", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/tshirts.jpg?raw=true" },
-    { href: "/shoes", name: "Shoes", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/shoes.jpg?raw=true" },
-    { href: "/glasses", name: "Glasses", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/glasses.png?raw=true" },
-    { href: "/jackets", name: "Jackets", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/jackets.jpg?raw=true" },
-    { href: "/suits", name: "Suits", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/suits.jpg?raw=true" },
-    { href: "/bags", name: "Bags", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/bags.jpg?raw=true" },
+  { href: "/jeans", name: "Jeans", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/jeans.jpg?raw=true" },
+  { href: "/t-shirts", name: "T-shirts", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/tshirts.jpg?raw=true" },
+  { href: "/shoes", name: "Shoes", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/shoes.jpg?raw=true" },
+  { href: "/glasses", name: "Glasses", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/glasses.png?raw=true" },
+  { href: "/jackets", name: "Jackets", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/jackets.jpg?raw=true" },
+  { href: "/suits", name: "Suits", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/suits.jpg?raw=true" },
+  { href: "/bags", name: "Bags", imageUrl: "https://github.com/burakorkmez/mern-ecommerce/blob/master/frontend/public/bags.jpg?raw=true" },
 ];
 
-const HomePage = () => {
 
+export const HomePage = () => {
 
-    const {data: products, isLoading} = useFeaturedProductsQuery();
+  const {data: products,isLoading} = useFeaturedProductsQuery();
 
+  return (
+    <div className='relative min-h-screen  text-white overflow-hidden'>
+      <div className='relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
+        <h1 className='text-center text-5xl sm:text-6xl font-bold text-emerald-400 mb-4'>
+          Explore Our Categories
+        </h1>
+        <p className='text-center text-xl text-gray-300 mb-12'>
+          Discover the latest trends in eco-friendly fashion
+        </p>
 
-    return (
-        <div className='relative min-h-screen  text-white overflow-hidden'>
-            <div className='relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
-                <h1 className='text-center text-5xl sm:text-6xl font-bold text-emerald-400 mb-4'>
-                    Explore Our Categories
-                </h1>
-                <p  className='text-center text-xl text-gray-300 mb-12'>
-                    Discover the latest trends in eco-friendly fashion
-                </p>
-
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
-                    {
-                        categories?.map((category) => (
-                            <CategoryItem category={category} key={category.name} />
-                        ))
-                    }
-                </div>
-
-                {!isLoading && products?.length > 0 && <FeaturedProduct featuredProducts={products} />}
-            </div>
-
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
+          {
+            categories?.map((category) => (
+              <CategoryItem category={category} key={category.name} />
+            ))
+          }
         </div>
-    );
-};
-export default HomePage;
+
+        {!isLoading && products?.length > 0 && <FeaturedProduct featuredProducts={products} />}
+      </div>
+
+    </div>
+  )
+}

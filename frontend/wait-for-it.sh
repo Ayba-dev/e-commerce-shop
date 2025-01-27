@@ -10,17 +10,18 @@ fi
 
 hostport=$1
 shift
+# shellcheck disable=SC2124
 cmd="$@"
 
 # Разбираем host и port
-host=$(echo $hostport | cut -d: -f1)
-port=$(echo $hostport | cut -d: -f2)
+host=$(echo "$hostport" | cut -d: -f1)
+port=$(echo "$hostport" | cut -d: -f2)
 
 # Цикл ожидания
 echo "Waiting for $host:$port to be available..."
 
 # Ожидаем, пока сервис не станет доступен
-until nc -z $host $port; do
+until nc -z "$host" "$port"; do
   echo "$host:$port is unavailable - sleeping"
   sleep 2
 done

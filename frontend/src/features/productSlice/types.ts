@@ -1,15 +1,23 @@
+export interface IItem  {
+    _id: string;
+    category?: string;
+    name: string,
+    description?: string,
+    price: number,
+    image: string,
+    isFeatured?: boolean,
+}
 
 
 export interface IProduct {
-    _id: string,
+    _id: string;
     name: string,
     description: string,
     price: number,
     category: string,
-    image: string,
-    isFeatured: boolean,
-    createdAt?: string,
-    updatedAt?: string
+    image: string | undefined,
+    isFeatured?: boolean,
+    products:IItem[]
 }
 
 export interface IProductCategory {
@@ -17,3 +25,4 @@ export interface IProductCategory {
     image: string,
     price: number,
 }
+

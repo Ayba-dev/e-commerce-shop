@@ -1,37 +1,37 @@
-import {createAsyncThunk} from "@reduxjs/toolkit";
-import {BASE_URL} from "../../../constants/constants.ts";
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { BASE_URL } from '../../constants'
 
 
-interface IProfile {
-    _id: string,
-    name: string,
-    email: string,
-    role: string,
-    cartItems: string[],
+export interface IProfile {
+  _id: number,
+  name: string,
+  email: string,
+  password: string,
+  confirmPassword: string,
+  role: string,
+  cartItems: string[],
+
 }
 
 export const checkAuth = createAsyncThunk(
-    'auth/checkAuth',
-    async (_ , {rejectWithValue}) => {
+  'checkAuth',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await fetch(`${BASE_URL}/auth/profile`, {
+        method: 'GET',
+        credentials: 'include',
+      })
 
-        try {
-          const  response =  await fetch(`${BASE_URL}/auth/profile`,{
-              method: 'GET',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              credentials: 'include',
-          })
-            if (!response.ok)  {
-                rejectWithValue("Not logged in")
-            }
-            const data : IProfile  = await response.json()
+      if (!res.ok) {
+        return rejectWithValue('Not logged in')
+      }
 
-            return data
+      const data: IProfile = await res.json()
 
-        }catch(error) {
-            return rejectWithValue(error.message);
-        }
+      return data
 
+
+    } catch (error) {
+      return rejectWithValue(error.message)
     }
-)
+  })

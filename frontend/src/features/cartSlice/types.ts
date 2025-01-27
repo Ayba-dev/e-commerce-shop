@@ -9,7 +9,10 @@ export interface ICart {
 
 export interface ICartSlice{
     carts: ICart[] | [];
-    coupon: string | null;
+    coupon: {
+        code: string,
+        discountPercentage: string
+    } | null;
     total: number;
     subtotal: number;
     isCouponApplied: boolean

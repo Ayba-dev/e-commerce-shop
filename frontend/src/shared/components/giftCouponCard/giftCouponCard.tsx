@@ -1,10 +1,10 @@
 import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
-import {useApplyCouponMutation} from "../../store/slices/cartSlice/cartApi.ts";
+
 import {toast} from "react-toastify";
-import {removeCoupon} from "../../store/slices/cartSlice/cartSlice.ts";
-import {BASE_URL} from "../../constants/constants.ts";
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { useApplyCouponMutation } from '../../../services/cartApi'
+import { removeCoupon } from '../../../features/cartSlice/cartSlice'
 
 const GiftCouponCard = () => {
 
@@ -20,7 +20,7 @@ const GiftCouponCard = () => {
     }, [coupon]);
 
     const handleApplyCoupon = async () => {
-        if (!userInputCode) return
+        if (!userInputCode) return;
         await applyCoupon(userInputCode).unwrap();
     }
 
@@ -60,7 +60,7 @@ const GiftCouponCard = () => {
                     className='flex w-full items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300'
                     whileHover={{scale: 1.05}}
                     whileTap={{scale: 0.95}}
-                    onClick={handleApplyCoupon}
+                    // onClick={handleApplyCoupon}
                 >
                     Apply Code
                 </motion.button>
@@ -70,7 +70,7 @@ const GiftCouponCard = () => {
                     <h3 className='text-lg font-medium text-gray-300'>Applied Coupon</h3>
 
                     <p className='mt-2 text-sm text-gray-400'>
-                        {coupon.code} - {coupon.discountPercentage}% off
+                        {coupon?.code} - {coupon?.discountPercentage}% off
                     </p>
 
                     <motion.button
@@ -91,7 +91,7 @@ const GiftCouponCard = () => {
                 <div className='mt-4'>
                     <h3 className='text-lg font-medium text-gray-300'>Your Available Coupon:</h3>
                     <p className='mt-2 text-sm text-gray-400'>
-                        {coupon.code} - {coupon.discountPercentage}% off
+                        {coupon?.code} - {coupon?.discountPercentage}% off
                     </p>
                 </div>
             )}

@@ -1,15 +1,13 @@
 import {Minus, Plus, Trash} from "lucide-react";
-import {useAppDispatch} from "../../store/hooks.ts";
-import {decreaseFromCart, increaseFromCart, removeFromCart} from "../../store/slices/cartSlice/cartSlice.ts";
-import {toast} from "react-toastify";
-import {
-    useRemoveCartMutation,
-    useUpdateQuantityMutation
-} from "../../store/slices/cartSlice/cartApi.ts";
+import { useRemoveCartMutation, useUpdateQuantityMutation } from '../../../services/cartApi'
+import { useAppDispatch } from '../../store/hooks'
+import { decreaseFromCart, deleteCart, increaseFromCart } from '../../../features/cartSlice/cartSlice'
+import { toast } from 'react-toastify'
 
 
-interface Props {
-    _id?: string,
+
+interface IItem {
+    _id: string,
     image?: string,
     quantity?: number,
     price?: number,
@@ -17,44 +15,50 @@ interface Props {
     description?: string
 }
 
+interface  Props {
+    item: IItem;
+}
+
 const CartItem = ({item}: Props) => {
 
-    const dispatch = useAppDispatch();
     const [removeCart] = useRemoveCartMutation();
-    const [updateCart] = useUpdateQuantityMutation();
+    const [updateCart] = useUpdateQuantityMutation()
+    const dispatch = useAppDispatch();
 
-    const handleRemoveCart = async (item) => {
+
+
+    const handleRemove = async (item: IItem) => {
         try {
             await removeCart(item._id).unwrap();
-            await dispatch(removeFromCart(item));
-            // if (res.ok) {
-            //     await dispatch(removeFromCart(item));
-            //     toast.success(`${item.name} removed from cart successfully.`);
-            // } else {
-            //     toast.error(`Failed to remove ${item.name} from cart.`);
-            // }
+            dispatch(deleteCart(item))
+        }catch (error) {
+            console.log(error);
+        }
+
+    }
+
+    const increaseCartFromCart = async (item: IItem) => {
+        try {
+            await updateCart({ productId: item._id, quantity: item.quantity + 1 }).unwrap()
+            dispatch(increaseFromCart(item))
+            toast.success(`${item.name} removed from cart successfully.`)
         } catch (error) {
-            toast.error(`${error.message} error occurred while removing cart!`);
+            toast.error(`${error.message} error occurred while removing cart!`)
         }
     }
 
 
-    const decreaseCartFromCart = async (item) => {
+    const decreaseCartFromCart = async (item: IItem) => {
         try {
-            await updateCart({productId: item._id, quantity: item.quantity - 1}).unwrap();
-            dispatch(decreaseFromCart(item));
+            await updateCart({ productId: item._id, quantity: item.quantity - 1 }).unwrap()
+            dispatch(decreaseFromCart(item))
+            toast.success('CartItem decreased successfully.')
         } catch (error) {
-            toast.error(`${error.message} error occurred while removing cart!`);
+            toast.error(`${error.message} error occurred while removing cart!`)
         }
     }
-    const increaseCartFromCart = async (item) => {
-        try {
-            await updateCart({productId: item._id, quantity: item.quantity + 1}).unwrap();
-            dispatch(increaseFromCart(item));
-        } catch (error) {
-            toast.error(`${error.message} error occurred while removing cart!`);
-        }
-    }
+
+
 
     return (
         <div className='rounded-lg border p-4 shadow-sm border-gray-700 bg-gray-800 md:p-6'>
@@ -67,8 +71,8 @@ const CartItem = ({item}: Props) => {
                 <div className='flex items-center justify-between md:order-3 md:justify-end'>
                     <div className='flex items-center gap-2'>
                         <button
-                            disabled={item.quantity === 0}
-                            onClick={() => decreaseCartFromCart(item)}
+                          disabled={item.quantity <= 1}
+                          onClick={() => decreaseCartFromCart(item)}
                             className='inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border
 							 border-gray-600 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2
 							  focus:ring-emerald-500'
@@ -99,7 +103,7 @@ const CartItem = ({item}: Props) => {
 
                     <div className='flex items-center gap-4'>
                         <button
-                            onClick={() => handleRemoveCart(item)}
+                            onClick={() => handleRemove(item)}
                             className='inline-flex items-center text-sm font-medium text-red-400
 							 hover:text-red-300 hover:underline'
                         >
